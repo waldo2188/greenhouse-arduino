@@ -1,20 +1,10 @@
-/**********
-   Talk with Tiny RTC(Real Time Clock) (DS1307)
-
-*/
+/**
+ * Talk with Tiny RTC(Real Time Clock) (DS1307)
+ */
 
 #include "RealTimeClock.h"
 
-// Tiny RTC(Real Time Clock) (DS1307)
-// @see http://blog.simtronyx.de/en/tiny-rtc-ds1307-real-time-clock-with-an-additional-temperature-sensor-ds18b20/
-#include <Wire.h>    // I2C-library
-#include "RTClib.h"  // RTC-library
-
-RTC_DS1307 RTC;      // RTC Module Chip model on theTiny RTC i2C modul
-
-RealTimeClock::RealTimeClock() {
-
-}
+RealTimeClock::RealTimeClock() {}
 
 void RealTimeClock::init() {
   // Initialisation of I2C

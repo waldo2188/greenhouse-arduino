@@ -7,10 +7,13 @@
 #include "RealTimeClock.h"
 #include "Temperature.h"
 #include "ManageTemperatureHumidity.h"
+#include "Watering.h";
  
 RealTimeClock realTimeClock;
 Temperature temperature;
-ManageTemperatureHumidity manageTemperatureHumidity;
+ManageTemperatureHumidity manageTemperatureHumidity(3);
+Watering watering;
+
 
 void setup() {
   Serial.begin(9600);
@@ -21,8 +24,10 @@ void setup() {
   // Initialise temperature sensors
   temperature.init();
 
-  manageTemperatureHumidity.init();
+  //manageTemperatureHumidity.init(fanPin);
 
+  watering.init();
+  
   Serial.println(realTimeClock.getLog("capteur", "INFO", "{temperature:10.87}", "Hey, jude, ma cocote"));
 
 }
@@ -40,12 +45,18 @@ void loop() {
 
   Serial.print("Inside humidity ");
   Serial.print(temperature.getInsideHumidity());
-  Serial.println("%");
+  Serial.println("%");  
 
   Serial.println("-------------------------------------------");
 
-  manageTemperatureHumidity.manageFan(temperature.getInsideTemp(), temperature.getOutsideTemp(), temperature.getInsideHumidity());
+  manageTemperatureHumidity.manageFan(
+    temperature.getInsideTemp(),
+    temperature.getOutsideTemp(),
+    temperature.getInsideHumidity()
+    );
 
-  delay(20000);
+  watering.manageWatering();
+
+  delay(5000);
 
 }
