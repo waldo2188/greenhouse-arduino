@@ -1,18 +1,18 @@
 /**
- * Temperature
- * 
- * Manage all temperature and humidity sensor
- */
+   Temperature
 
- 
+   Manage all temperature and humidity sensor
+*/
+
+
 #ifndef Temperature_h
 #define Temperature_h
 
- #include <Arduino.h>
+#include <Arduino.h>
 
 class Temperature {
 
-  public: 
+  public:
     void init();
     float getInsideTemp();
     float getOutsideTemp();
@@ -20,4 +20,4 @@ class Temperature {
 };
 
 #endif
- 
+

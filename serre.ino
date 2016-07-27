@@ -12,7 +12,7 @@
 RealTimeClock realTimeClock;
 Temperature temperature;
 ManageTemperatureHumidity manageTemperatureHumidity(3);
-Watering watering;
+Watering watering(A0, 8);
 
 
 void setup() {
