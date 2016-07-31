@@ -3,14 +3,19 @@
  * 
  * 
  */
-
+ 
+#include <OneWire.h>            // OneWire
 #include "RealTimeClock.h"
 #include "Temperature.h"
 #include "ManageTemperatureHumidity.h"
 #include "Watering.h";
+
+#define OUTDSIDE_SENSOR_PIN 2   // Number of the temperature sensor's Pin connected to the Arduino
+
+OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initialisation
  
 RealTimeClock realTimeClock;
-Temperature temperature;
+Temperature temperature(&oneWire);
 ManageTemperatureHumidity manageTemperatureHumidity(3);
 Watering watering(A0, 8);
 

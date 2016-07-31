@@ -7,12 +7,12 @@
 #include <OneWire.h>            // OneWire
 #include <DallasTemperature.h>  // DS18B20 For reading the temperature from the sensor
 
-#define OUTDSIDE_SENSOR_PIN 2   // Number of the temperature sensor's Pin connected to the Arduino
+//#define OUTDSIDE_SENSOR_PIN 2   // Number of the temperature sensor's Pin connected to the Arduino
 #define OUTDSIDE_SENSOR_RESOLUTION 12 // How many bits to use for temperature values: 9, 10, 11 or 12
 
-OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initialisation
-DallasTemperature outsideSensors(&oneWire);   // DS18B20, temperature sensor initialisation
-DeviceAddress outsideSensorsDeviceAddress;
+//OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initialisation
+//DallasTemperature outsideSensors(&oneWire);   
+//DallasTemperature _outsideSensors();
 
 // End of init outside temperature sensor
 // ------------------------------------------------------------------------------------------
@@ -29,11 +29,20 @@ DHT humidityTemperatureSensor(DHTPIN, DHTTYPE);
 // End of inside humidity and temperature sensor
 // ------------------------------------------------------------------------------------------
 
-void Temperature::init() {    
-  outsideSensors.begin();  // DS18B20 initialise bus
-  outsideSensors.getAddress(outsideSensorsDeviceAddress, 0);
+Temperature::Temperature(OneWire* wire) {
+  this->_wire = wire;
+}
+
+void Temperature::init() {
+  
+  this->_outsideSensors = DallasTemperature(this->_wire);
+  
+  DeviceAddress _outsideSensorsDeviceAddress;
+   
+  _outsideSensors.begin();  // DS18B20 initialise bus
+  _outsideSensors.getAddress(_outsideSensorsDeviceAddress, 0);
   // Set the accuracy of the temperature measurement
-  outsideSensors.setResolution(outsideSensorsDeviceAddress, OUTDSIDE_SENSOR_RESOLUTION);
+  _outsideSensors.setResolution(_outsideSensorsDeviceAddress, OUTDSIDE_SENSOR_RESOLUTION);
 }
 
 float Temperature::getInsideTemp() {
@@ -45,7 +54,7 @@ float Temperature::getInsideHumidity() {
 }
 
 float Temperature::getOutsideTemp() {
-  outsideSensors.requestTemperatures();
-  return outsideSensors.getTempCByIndex(0);  
+  _outsideSensors.requestTemperatures();
+  return _outsideSensors.getTempCByIndex(0);  
 }
 
