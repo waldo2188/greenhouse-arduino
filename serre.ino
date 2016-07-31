@@ -10,15 +10,24 @@
 #include "ManageTemperatureHumidity.h"
 #include "Watering.h";
 
+
 #define OUTDSIDE_SENSOR_PIN 2   // Number of the temperature sensor's Pin connected to the Arduino
 #define DHTPIN 4     // what pin we're connected to
+
+#define FAN_PIN 3
+
+#define MOISTURE_SENSOR_PIN A0 // This is an analog pin of Arduino for the moisture sensor
+#define MOISTURE_VCC_OUTPUT_PIN 8 // This is useful to turn on or off the sensor and avoid rusting
+#define HALL_MAGNETIC_SENSOR_PIN 7 // Pin for the Hall Magnetic sensor
+#define WATER_PUMP_PIN 6 // This is the number of a PWM pin for turning on or off a water pump
+
 
 OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initialisation
  
 RealTimeClock realTimeClock;
 Temperature temperature(&oneWire, DHTPIN);
 ManageTemperatureHumidity manageTemperatureHumidity(3);
-Watering watering(A0, 8);
+Watering watering(MOISTURE_SENSOR_PIN, MOISTURE_VCC_OUTPUT_PIN, HALL_MAGNETIC_SENSOR_PIN, WATER_PUMP_PIN);
 
 
 void setup() {
