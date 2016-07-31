@@ -11,11 +11,12 @@
 #include "Watering.h";
 
 #define OUTDSIDE_SENSOR_PIN 2   // Number of the temperature sensor's Pin connected to the Arduino
+#define DHTPIN 4     // what pin we're connected to
 
 OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initialisation
  
 RealTimeClock realTimeClock;
-Temperature temperature(&oneWire);
+Temperature temperature(&oneWire, DHTPIN);
 ManageTemperatureHumidity manageTemperatureHumidity(3);
 Watering watering(A0, 8);
 
@@ -52,8 +53,6 @@ void loop() {
   Serial.print(temperature.getInsideHumidity());
   Serial.println("%");  
 
-  Serial.println("-------------------------------------------");
-
   manageTemperatureHumidity.manageFan(
     temperature.getInsideTemp(),
     temperature.getOutsideTemp(),
@@ -61,6 +60,9 @@ void loop() {
     );
 
   watering.manageWatering();
+
+  Serial.println("-------------------------------------------");
+  Serial.println("");
 
   delay(5000);
 
