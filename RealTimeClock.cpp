@@ -29,6 +29,10 @@ void RealTimeClock::init() {
  
 }
 
+RTC_DS1307 RealTimeClock::getRTC() {
+  return RTC;
+}
+
 /**
  * RealTimeClock::getLog
  * @exemple [2016-03-07 08:43:22] capteur.INFO: {“temperature_int”: 20} [“capteur”]
@@ -60,6 +64,7 @@ String RealTimeClock::getLog(String channel, String levelName, String Message, S
   
   return logString;
 }
+
 
 /**
  * Add leading zero to have a two-digit number

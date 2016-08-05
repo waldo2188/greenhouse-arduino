@@ -39,6 +39,8 @@ class RealTimeClock {
     */
     static String leadingZeros(byte value);
 
+    RTC_DS1307 getRTC();
+
   private:
     RTC_DS1307 RTC;      // RTC Module Chip model on theTiny RTC i2C modul
 };

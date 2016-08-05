@@ -32,7 +32,7 @@ RealTimeClock realTimeClock;
 Temperature temperature(&oneWire, DHTPIN);
 ManageTemperatureHumidity manageTemperatureHumidity(3);
 Watering watering(MOISTURE_SENSOR_PIN, MOISTURE_VCC_OUTPUT_PIN, HALL_MAGNETIC_SENSOR_PIN, WATER_PUMP_PIN);
-Lighting lighting(LIGHT_SENSOR_PIN, LIGHT_OUTPUT_PIN);
+Lighting lighting(LIGHT_SENSOR_PIN, LIGHT_OUTPUT_PIN, &realTimeClock);
 
 void setup() {
   Serial.begin(9600);
