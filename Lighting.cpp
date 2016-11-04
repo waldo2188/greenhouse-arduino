@@ -1,7 +1,6 @@
 
 #include "Lighting.h";
 
-
 Lighting::Lighting(byte lightSensorPin, byte lightOutputPin, RealTimeClock* rtc) {
   _lightSensorPin = lightSensorPin;
   _lightOutputPin = lightOutputPin;
@@ -29,7 +28,7 @@ void Lighting::manageLight() {
   
 
   // Light On !
-  if (amontOfLight < 800 && _dayTimeStart <= actualHour && actualHour <= _dayTimeEnd) {
+  if (_isEnabled && amontOfLight < 800 && _dayTimeStart <= actualHour && actualHour <= _dayTimeEnd) {
 
     byte lightNeed = map(amontOfLight, 0, 1023, 255, 0);
      
@@ -42,6 +41,10 @@ void Lighting::manageLight() {
     // Light Off !
     analogWrite(_lightOutputPin, 0);
   }
-  
 }
+
+void Lighting::enabledLight(bool isEnabled) {
+  _isEnabled = isEnabled;
+}
+
 

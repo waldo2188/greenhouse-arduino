@@ -7,7 +7,7 @@
 RealTimeClock::RealTimeClock() {}
 
 void RealTimeClock::init() {
-  // Initialisation of I2C
+  // Initialisation of I2CrealTimeClock
   Wire.begin();
 
   // Initialisation of RTC

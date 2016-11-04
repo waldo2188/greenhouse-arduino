@@ -18,12 +18,12 @@
 #define FAN_PIN 3
 
 #define MOISTURE_SENSOR_PIN A0 // This is an analog pin of Arduino for the moisture sensor
-#define MOISTURE_VCC_OUTPUT_PIN 8 // This is useful to turn on or off the sensor and avoid rusting
-#define HALL_MAGNETIC_SENSOR_PIN 7 // Pin for the Hall Magnetic sensor
+#define MOISTURE_VCC_OUTPUT_PIN 22 // This is useful to turn on or off the sensor and avoid rusting
+#define HALL_MAGNETIC_SENSOR_PIN 26 // Pin for the Hall Magnetic sensor
 #define WATER_PUMP_PIN 6 // This is the number of a PWM pin for turning on or off a water pump
 
 #define LIGHT_SENSOR_PIN A1 // Arduino's analog input link to a light sensor
-#define LIGHT_OUTPUT_PIN 9 // Arduino's PWM pin to manage light
+#define LIGHT_OUTPUT_PIN 5 // Arduino's PWM pin to manage light
 
 
 OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initialisation
@@ -49,7 +49,7 @@ void setup() {
 
   lighting.init();
   
-  Serial.println(realTimeClock.getLog("capteur", "INFO", "{temperature:10.87}", "Hey, jude, ma cocote"));
+  Serial.println(realTimeClock.getLog("capteur", "INFO", "{temperature:10.87}", "Hey, jude"));
 
 }
 

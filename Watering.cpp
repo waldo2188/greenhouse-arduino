@@ -50,8 +50,8 @@ void Watering::manageWatering() {
   
     // If the tank is empty we can't send water to plants
     if(this->isTankEmpty() == false) {
-  
       if(this->_lowThreshold > moistureSensorValue) {
+         Serial.println("Ongoing watering");
          analogWrite(this->_waterPumpPin, 255);
          delay(1000);
       }
