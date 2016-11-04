@@ -155,7 +155,7 @@ void GreenWifi::logData(
     cmd += outsideTemp;
     cmd += "&field2=";
     cmd += insideTemp;
-    cmd += "&field=";
+    cmd += "&field3=";
     cmd += insideHumidity;
     cmd += "&field4=";
     cmd += fanSpeed;
