@@ -19,23 +19,23 @@ void Lighting::manageLight() {
 
   // O mean no light at all
   // 1023 mean a lot of light
-  int amontOfLight = analogRead(_lightSensorPin);
+  _ambientLight = analogRead(_lightSensorPin);
 
   Serial.print("Amount of light : ");
-  Serial.println(amontOfLight);
+  Serial.println(_ambientLight);
 
   byte actualHour = this->_rtc->getRTC().now().hour();
   
 
   // Light On !
-  if (_isEnabled && amontOfLight < 800 && _dayTimeStart <= actualHour && actualHour <= _dayTimeEnd) {
+  if (_isEnabled && _ambientLight < 800 && _dayTimeStart <= actualHour && actualHour <= _dayTimeEnd) {
 
-    byte lightNeed = map(amontOfLight, 0, 1023, 255, 0);
+    _additionnalLight = map(_ambientLight, 0, 1023, 255, 0);
      
     Serial.print("Compensating lighting : ");
-    Serial.println(lightNeed);
+    Serial.println(_additionnalLight);
 
-    analogWrite(_lightOutputPin, lightNeed);
+    analogWrite(_lightOutputPin, _additionnalLight);
     
   } else {
     // Light Off !
@@ -45,6 +45,14 @@ void Lighting::manageLight() {
 
 void Lighting::enabledLight(bool isEnabled) {
   _isEnabled = isEnabled;
+}
+
+int Lighting::getAmbientLight() {
+  return _ambientLight;
+}
+
+byte Lighting::getAdditionnalLight() {
+  return _additionnalLight;
 }
 
 

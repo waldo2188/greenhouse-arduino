@@ -11,7 +11,7 @@
 #include <Arduino.h>
 #include <OneWire.h>            // OneWire
 #include <DallasTemperature.h>  // DS18B20 For reading the temperature from the sensor
-#include <DHT.h>
+#include "dht.h"
 
 class Temperature {
 
@@ -28,7 +28,9 @@ class Temperature {
   byte _dhtPin; // The number of the pin where the DHT sensor is connected
   DallasTemperature _outsideSensors; // DS18B20, temperature sensor initialisation
   DeviceAddress _outsideSensorsDeviceAddress;
-  DHT* _humidityTemperatureSensor;
+  dht DHT;
+  double _temperature;
+  double _humidity;
 };
 
 #endif

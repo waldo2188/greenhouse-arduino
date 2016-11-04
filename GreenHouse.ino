@@ -3,17 +3,19 @@
  * 
  * 
  */
- 
+#include "Config.h" 
 #include <OneWire.h>            // OneWire
 #include "RealTimeClock.h"
 #include "Temperature.h"
 #include "ManageTemperatureHumidity.h"
 #include "Watering.h"
 #include "Lighting.h"
+#include "GreenWifi.h"
+
 
 
 #define OUTDSIDE_SENSOR_PIN 2   // Number of the temperature sensor's Pin connected to the Arduino
-#define DHTPIN 4     // what pin we're connected to
+#define DHTPIN 28     // what pin we're connected to
 
 #define FAN_PIN 3
 
@@ -33,9 +35,19 @@ Temperature temperature(&oneWire, DHTPIN);
 ManageTemperatureHumidity manageTemperatureHumidity(3);
 Watering watering(MOISTURE_SENSOR_PIN, MOISTURE_VCC_OUTPUT_PIN, HALL_MAGNETIC_SENSOR_PIN, WATER_PUMP_PIN);
 Lighting lighting(LIGHT_SENSOR_PIN, LIGHT_OUTPUT_PIN, &realTimeClock);
+GreenWifi gWifi;
+
 
 void setup() {
   Serial.begin(9600);
+  // initialize serial for ESP WiFi module
+  Serial1.begin(115200);
+
+  static HttpServerHandler myServerHandlers[] = {
+    { "GET /light", switchLight }
+  };
+
+  gWifi.init(&Serial1, WIFI_SSID, WIFI_PASSWORD, myServerHandlers, API_THINGSPEAK_KEY);
 
   // Initialise the Real Time Clock
   realTimeClock.init();
@@ -54,8 +66,9 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 
+  gWifi.handleRequest();
+  
   Serial.print("Outside temperature ");
   Serial.print(temperature.getOutsideTemp());
   Serial.println("°C");
@@ -66,8 +79,7 @@ void loop() {
 
   Serial.print("Inside humidity ");
   Serial.print(temperature.getInsideHumidity());
-  Serial.println("%");  
-
+  Serial.println("%");
   manageTemperatureHumidity.manageFan(
     temperature.getInsideTemp(),
     temperature.getOutsideTemp(),
@@ -81,6 +93,19 @@ void loop() {
   Serial.println("-------------------------------------------");
   Serial.println("");
 
+  gWifi.logData(
+    temperature.getOutsideTemp(),
+    temperature.getInsideTemp(),
+    temperature.getInsideHumidity(),
+    manageTemperatureHumidity.getFanSpeed(),
+    lighting.getAmbientLight(),
+    lighting.getAdditionnalLight()
+    );
+      
   delay(5000);
+}
 
+void switchLight(String query) {
+  query.toLowerCase();
+  lighting.enabledLight(query == "on");
 }

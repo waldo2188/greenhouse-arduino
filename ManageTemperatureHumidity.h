@@ -19,6 +19,7 @@ class ManageTemperatureHumidity {
     ManageTemperatureHumidity(byte fanPin);
     void manageFan(float insideTemp, float outsideTemp, float insideHumidity);
     void setFanSpeed(byte fanSpeed);
+    byte getFanSpeed();
 
   private:
   /**
@@ -28,6 +29,7 @@ class ManageTemperatureHumidity {
    * Under 60 the Fan won't start and make strange noise... (Maybe my fan is a little bit shitty)
    */
     byte _fanPin;
+    byte _fanSpeed;
     byte _idealLowtemperature = 18; // unit is °C
     byte _idealHightemperature = 30; // unit is °C
     byte _idealHighHumidity = 80; // unit is %

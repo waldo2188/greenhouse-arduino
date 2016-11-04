@@ -16,6 +16,8 @@ class Lighting {
     void init();
     void manageLight();
     void enabledLight(bool isEnabled);
+    int getAmbientLight();
+    byte getAdditionnalLight();
     
   private:
     byte _lightSensorPin; // Arduino's analog pin link to the light resistor
@@ -25,7 +27,9 @@ class Lighting {
     byte _dayTimeStart = 6; // The day start à 6h
     byte _dayTimeEnd = 20; // The day end at 20h
     // Define if light is enabled
-    bool _isEnabled = true;
+    bool _isEnabled = false;
+    int _ambientLight;
+    byte _additionnalLight;
 };
 
 #endif

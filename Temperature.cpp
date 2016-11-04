@@ -21,11 +21,7 @@ void Temperature::init() {
   this->_outsideSensors = DallasTemperature(this->_wire);
   
   DeviceAddress _outsideSensorsDeviceAddress;
-
-  DHT humidityTemperatureSensor (this->_dhtPin, DHTTYPE);
-
-  this->_humidityTemperatureSensor = &humidityTemperatureSensor;
-   
+ 
   _outsideSensors.begin();  // DS18B20 initialise bus
   _outsideSensors.getAddress(_outsideSensorsDeviceAddress, 0);
   // Set the accuracy of the temperature measurement
@@ -33,12 +29,30 @@ void Temperature::init() {
 }
 
 float Temperature::getInsideTemp() {
-  return this->_humidityTemperatureSensor->readTemperature();
+
+  int chk = DHT.read22(this->_dhtPin);
+
+  if (chk == DHTLIB_OK) {
+    _temperature = DHT.temperature;
+    _humidity = DHT.humidity;
+    return _temperature;
+  } 
+
+  return _temperature;
 }
 
 float Temperature::getInsideHumidity() {
-  return this->_humidityTemperatureSensor->readHumidity();
+  int chk = DHT.read22(this->_dhtPin);
+
+  if (chk == DHTLIB_OK) {
+    _temperature = DHT.temperature;
+    _humidity = DHT.humidity;
+  }
+
+  return _humidity;
 }
+
+     
 
 float Temperature::getOutsideTemp() {
   _outsideSensors.requestTemperatures();

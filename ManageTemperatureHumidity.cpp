@@ -11,30 +11,30 @@ ManageTemperatureHumidity::ManageTemperatureHumidity(byte fanPin) {
 }
 
 void ManageTemperatureHumidity::manageFan(float insideTemp, float outsideTemp, float insideHumidity) {
-  byte fanSpeed = 0;
+  _fanSpeed = 0;
 
   // Check if it's to cold inside the greenhouse
   if (insideTemp <= (this->_idealLowtemperature) && outsideTemp > insideTemp) {
     //TODO refine the bounds
-    fanSpeed = map((this->_idealLowtemperature - insideTemp), 0, 20, 60, 255);
+    _fanSpeed = map((this->_idealLowtemperature - insideTemp), 0, 20, 60, 255);
   }
 
   // Check if it's to hot inside the greenhouse
   if (insideTemp >= _idealHightemperature && outsideTemp <= insideTemp) {
     //TODO refine the bounds
-    fanSpeed = map((insideTemp - this->_idealHightemperature), 0, 20, 60, 255);
+    _fanSpeed = map((insideTemp - this->_idealHightemperature), 0, 20, 60, 255);
   }
 
   if (insideHumidity > this->_idealHighHumidity) {
     //TODO refine the bounds
-    fanSpeed = map((insideHumidity - this->_idealHighHumidity), 0, 20, 60, 255);
+    _fanSpeed = map((insideHumidity - this->_idealHighHumidity), 0, 20, 60, 255);
   }
 
   Serial.print("Fan speed : ");
-  Serial.println(fanSpeed);
+  Serial.println(_fanSpeed);
 
-  if (fanSpeed > 0) {
-    this->setFanSpeed(fanSpeed);
+  if (_fanSpeed > 0) {
+    this->setFanSpeed(_fanSpeed);
   } else {
     this->setFanSpeed(0);
   }
@@ -45,5 +45,9 @@ void ManageTemperatureHumidity::manageFan(float insideTemp, float outsideTemp, f
 */
 void ManageTemperatureHumidity::setFanSpeed(byte fanSpeed) {
   analogWrite(this->_fanPin, fanSpeed);
+}
+
+byte ManageTemperatureHumidity::getFanSpeed() {
+  return _fanSpeed;
 }
 
