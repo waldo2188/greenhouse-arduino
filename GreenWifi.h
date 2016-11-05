@@ -1,4 +1,7 @@
 
+#ifndef Greewifi_h
+#define Greewifi_h
+
 #include <Arduino.h>
 
 // See : https://github.com/sleemanj/ESP8266_Simple/blob/3df46601ca075762742a62770392f39b9af5155a/ESP8266_Simple.h
@@ -47,4 +50,7 @@ class GreenWifi
     String _apiThingsSpeak;
   
 };
+
+#endif
+
 

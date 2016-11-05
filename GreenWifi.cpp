@@ -2,9 +2,10 @@
 #include "GreenWifi.h"
 #include "WiFiEsp.h"
 
-#define _ESPLOGLEVEL_ 5
 
+// Initialize the Server client object
 WiFiEspServer server(80);
+
 // Initialize the Ethernet client object
 WiFiEspClient httpClient;
 
@@ -12,7 +13,6 @@ WiFiEspClient httpClient;
 int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 GreenWifi::GreenWifi() {
-  
 }
 
 void GreenWifi::init(Stream *espSerial, char *ssid, char *password, HttpServerHandler *httpServerHandlers, String apiThingsSpeak) {
@@ -114,7 +114,7 @@ void GreenWifi::handleRequest() {
       "HTTP/1.1 200 OK\r\n"
       "Content-Type: text/html\r\n"
       "Connection: close\r\n"  // the connection will be closed after completion of the response
-      "\r\n");
+      "\r\nok\r\n");
     }
     
     // We clear the request

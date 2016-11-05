@@ -102,7 +102,7 @@ void loop() {
     lighting.getAdditionnalLight()
     );
       
-  delay(5000);
+  delay(30000);
 }
 
 void switchLight(String query) {
