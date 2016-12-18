@@ -25,7 +25,6 @@ void Lighting::manageLight() {
   Serial.println(_ambientLight);
 
   byte actualHour = this->_rtc->getRTC().now().hour();
-  
 
   // Light On !
   if (_isEnabled && _ambientLight < 800 && _dayTimeStart <= actualHour && actualHour <= _dayTimeEnd) {

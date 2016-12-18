@@ -27,7 +27,7 @@ class Lighting {
     byte _dayTimeStart = 6; // The day start à 6h
     byte _dayTimeEnd = 20; // The day end at 20h
     // Define if light is enabled
-    bool _isEnabled = false;
+    bool _isEnabled = true;
     int _ambientLight;
     byte _additionnalLight;
 };

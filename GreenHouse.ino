@@ -14,17 +14,17 @@
 
 
 
-#define OUTDSIDE_SENSOR_PIN 2   // Number of the temperature sensor's Pin connected to the Arduino
-#define DHTPIN 28     // what pin we're connected to
+#define OUTDSIDE_SENSOR_PIN 22   // Number of the temperature sensor's Pin connected to the Arduino
+#define DHTPIN 26     // what pin we're connected to
 
 #define FAN_PIN 3
 
-#define MOISTURE_SENSOR_PIN A0 // This is an analog pin of Arduino for the moisture sensor
-#define MOISTURE_VCC_OUTPUT_PIN 22 // This is useful to turn on or off the sensor and avoid rusting
-#define HALL_MAGNETIC_SENSOR_PIN 26 // Pin for the Hall Magnetic sensor
+#define MOISTURE_SENSOR_PIN A1 // This is an analog pin of Arduino for the moisture sensor
+#define MOISTURE_VCC_OUTPUT_PIN A2 // This is useful to turn on or off the sensor and avoid rusting
+#define HALL_MAGNETIC_SENSOR_PIN 24 // Pin for the Hall Magnetic sensor
 #define WATER_PUMP_PIN 6 // This is the number of a PWM pin for turning on or off a water pump
 
-#define LIGHT_SENSOR_PIN A1 // Arduino's analog input link to a light sensor
+#define LIGHT_SENSOR_PIN A0 // Arduino's analog input link to a light sensor
 #define LIGHT_OUTPUT_PIN 5 // Arduino's PWM pin to manage light
 
 
@@ -32,7 +32,8 @@ OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initial
  
 RealTimeClock realTimeClock;
 Temperature temperature(&oneWire, DHTPIN);
-ManageTemperatureHumidity manageTemperatureHumidity(3);
+// 
+ManageTemperatureHumidity manageTemperatureHumidity(FAN_PIN);
 Watering watering(MOISTURE_SENSOR_PIN, MOISTURE_VCC_OUTPUT_PIN, HALL_MAGNETIC_SENSOR_PIN, WATER_PUMP_PIN);
 Lighting lighting(LIGHT_SENSOR_PIN, LIGHT_OUTPUT_PIN, &realTimeClock);
 GreenWifi gWifi;
@@ -55,20 +56,17 @@ void setup() {
   // Initialise temperature sensors
   temperature.init();
 
-  //manageTemperatureHumidity.init(fanPin);
 
   watering.init();
 
   lighting.init();
-  
-  Serial.println(realTimeClock.getLog("capteur", "INFO", "{temperature:10.87}", "Hey, jude"));
 
+  // TODO remove when Wifi server will work
+  //switchLight("on");
 }
 
-void loop() {
+void loop() { 
 
-  gWifi.handleRequest();
-  
   Serial.print("Outside temperature ");
   Serial.print(temperature.getOutsideTemp());
   Serial.println("°C");
@@ -101,8 +99,17 @@ void loop() {
     lighting.getAmbientLight(),
     lighting.getAdditionnalLight()
     );
-      
-  delay(30000);
+
+  // 5minutes
+  delay(300000);
+
+  // TODO Don't work for now
+  /*long startMillis = millis();
+  do {
+    gWifi.handleRequest();
+    delay(1000);
+  } while (millis() - startMillis < 10000);*/
+ 
 }
 
 void switchLight(String query) {

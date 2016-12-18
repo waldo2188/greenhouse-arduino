@@ -3,8 +3,9 @@
 #include "WiFiEsp.h"
 
 
+// TODO Dosen't work for now
 // Initialize the Server client object
-WiFiEspServer server(80);
+//WiFiEspServer server(80);
 
 // Initialize the Ethernet client object
 WiFiEspClient httpClient;
@@ -19,10 +20,20 @@ void GreenWifi::init(Stream *espSerial, char *ssid, char *password, HttpServerHa
 
   _apiThingsSpeak = apiThingsSpeak;
   
-  this->httpServerHandlers = httpServerHandlers;
+  //this->httpServerHandlers = httpServerHandlers;
   
   // initialize ESP module
   WiFi.init(espSerial);
+
+   // get your MAC address
+  byte mac[6];
+  WiFi.macAddress(mac);
+  
+  // print MAC address
+  char buf[20];
+  sprintf(buf, "%02X:%02X:%02X:%02X:%02X:%02X", mac[5], mac[4], mac[3], mac[2], mac[1], mac[0]);
+  Serial.print("MAC address: ");
+  Serial.println(buf);
 
   // check for the presence of the shield
   if (WiFi.status() == WL_NO_SHIELD) {
@@ -39,7 +50,7 @@ void GreenWifi::init(Stream *espSerial, char *ssid, char *password, HttpServerHa
     status = WiFi.begin(ssid, password);
   }
 
-  Serial.println("You're connected to the network");
+  /*Serial.println("You're connected to the network");
   // print the SSID of the network you're attached to
   Serial.print("SSID: ");
   Serial.println(WiFi.SSID());
@@ -53,13 +64,14 @@ void GreenWifi::init(Stream *espSerial, char *ssid, char *password, HttpServerHa
   Serial.println();
   Serial.print("To see this page in action, open a browser to http://");
   Serial.println(ip);
-  Serial.println();
+  Serial.println();*/
 
-  server.begin();
+  // TODO Don't work for now
+  //server.begin();
 }
     
 void GreenWifi::handleRequest() {
-  
+  /*
   // listen for incoming clients
   WiFiEspClient client = server.available();
   
@@ -127,7 +139,7 @@ void GreenWifi::handleRequest() {
   }
 
   // close the connection:
-  client.stop();
+  client.stop();*/
 }
 
 String GreenWifi::readQueryParams(String query, String ref)

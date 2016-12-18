@@ -64,10 +64,10 @@ void Watering::manageWatering() {
 }
 
 // The Hall magnetic sensor : http://www.banggood.com/5Pcs-DC-5V-KY-003-Hall-Magnetic-Sensor-Module-For-Arduino-p-954579.html
-// When no magnet is near the sensor send 1
-// When a magnet is near the sensor, he send 0
+// When no magnet is near the sensor send 0
+// When a magnet is near the sensor, he send 1
 // So when 0 si send by the sensor, that mean that the trank is empty
 bool Watering::isTankEmpty() {
-  return digitalRead(_hallMagneticSensorPin) == 0;
+  return digitalRead(_hallMagneticSensorPin) == 1;
 }
 

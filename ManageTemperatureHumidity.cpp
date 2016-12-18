@@ -7,7 +7,6 @@ ManageTemperatureHumidity::ManageTemperatureHumidity(byte fanPin) {
   this->_fanPin = fanPin;
   // Init pin
   pinMode(_fanPin, OUTPUT);
-
 }
 
 void ManageTemperatureHumidity::manageFan(float insideTemp, float outsideTemp, float insideHumidity) {
