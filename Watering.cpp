@@ -28,8 +28,8 @@ void Watering::init() {
 
 void Watering::manageWatering() {
 
-  int moistureSensorValue = 9000;
-
+  this->_hasBeenWatering = 0;
+  
   // Watering plants until they have the right amount of water, or the tank is empty
   do {
 
@@ -38,10 +38,10 @@ void Watering::manageWatering() {
     delay(500);
   
     // Get the value of ground humidity
-    moistureSensorValue = analogRead(_moistureSensorPin);
+    this->_moistureSensorValue = analogRead(_moistureSensorPin);
   
     Serial.print("Moisture sensor : ");
-    Serial.println(moistureSensorValue);
+    Serial.println(this->_moistureSensorValue);
   
     digitalWrite(_moistureVCCOutputPin, LOW);
   
@@ -50,15 +50,15 @@ void Watering::manageWatering() {
   
     // If the tank is empty we can't send water to plants
     if(this->isTankEmpty() == false) {
-      if(this->_lowThreshold > moistureSensorValue) {
+      if(this->_lowThreshold > this->_moistureSensorValue) {
          Serial.println("Ongoing watering");
          analogWrite(this->_waterPumpPin, 255);
          delay(1000);
+         this->_hasBeenWatering++;
       }
-      
     }
 
-  } while(this->_lowThreshold > moistureSensorValue && this->isTankEmpty() == false);
+  } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false);
 
   analogWrite(this->_waterPumpPin, 0);
 }
@@ -69,5 +69,13 @@ void Watering::manageWatering() {
 // So when 0 si send by the sensor, that mean that the trank is empty
 bool Watering::isTankEmpty() {
   return digitalRead(_hallMagneticSensorPin) == 1;
+}
+
+int Watering::hasBeenWatering() {
+  return this->_hasBeenWatering;
+}
+
+int Watering::getMoisure() {
+  return this->_moistureSensorValue;
 }
 

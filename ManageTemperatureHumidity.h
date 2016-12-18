@@ -32,7 +32,7 @@ class ManageTemperatureHumidity {
     byte _fanSpeed;
     byte _idealLowtemperature = 18; // unit is °C
     byte _idealHightemperature = 30; // unit is °C
-    byte _idealHighHumidity = 80; // unit is %
+    byte _idealHighHumidity = 90; // unit is %
 
 };
 

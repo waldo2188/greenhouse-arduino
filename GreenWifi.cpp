@@ -158,7 +158,9 @@ void GreenWifi::logData(
   double insideHumidity,
   byte fanSpeed,
   int ambientLight,
-  byte additionnalLight  
+  byte additionnalLight,
+  int moiste,
+  int hasBeenWatering
   ) {
   
  if (httpClient.connect("api.thingspeak.com", 80)) {
@@ -175,6 +177,10 @@ void GreenWifi::logData(
     cmd += ambientLight;
     cmd += "&field6=";
     cmd += additionnalLight;
+    cmd += "&field7=";
+    cmd += moiste;
+    cmd += "&field8=";
+    cmd += hasBeenWatering;
     
     cmd += "\r\n\r\n";
   

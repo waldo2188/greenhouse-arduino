@@ -15,20 +15,20 @@ void ManageTemperatureHumidity::manageFan(float insideTemp, float outsideTemp, f
   // Check if it's to cold inside the greenhouse
   if (insideTemp <= (this->_idealLowtemperature) && outsideTemp > insideTemp) {
     //TODO refine the bounds
-    _fanSpeed = map((this->_idealLowtemperature - insideTemp), 0, 20, 60, 255);
+    _fanSpeed = map((this->_idealLowtemperature - insideTemp), 0, 20, 100, 255);
   }
 
   // Check if it's to hot inside the greenhouse
   if (insideTemp >= _idealHightemperature && outsideTemp <= insideTemp) {
     //TODO refine the bounds
-    _fanSpeed = map((insideTemp - this->_idealHightemperature), 0, 20, 60, 255);
+    _fanSpeed = map((insideTemp - this->_idealHightemperature), 0, 20, 100, 255);
   }
 
   if (insideHumidity > this->_idealHighHumidity) {
     //TODO refine the bounds
-    _fanSpeed = map((insideHumidity - this->_idealHighHumidity), 0, 20, 60, 255);
+    _fanSpeed = map((insideHumidity - this->_idealHighHumidity), 0, 20, 100, 255);
   }
-
+  
   Serial.print("Fan speed : ");
   Serial.println(_fanSpeed);
 

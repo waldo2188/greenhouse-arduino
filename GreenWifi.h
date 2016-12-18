@@ -36,7 +36,9 @@ class GreenWifi
       double insideHumidity,
       byte fanSpeed,
       int ambientLight,
-      byte additionnalLight  
+      byte additionnalLight,
+      int moiste,
+      int hasBeenWatering
     );
 
   protected:

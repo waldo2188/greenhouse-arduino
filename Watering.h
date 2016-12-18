@@ -12,6 +12,8 @@ class Watering {
     Watering(byte moistureSensorPin, byte moistureVCCOutputPin, byte hallMagneticSensorPin, byte waterPumpPin);
     void init();
     void manageWatering();
+    int getMoisure();
+    int hasBeenWatering();
 
   private:
     byte _moistureSensorPin; // This is an analog pin of Arduino
@@ -20,5 +22,7 @@ class Watering {
     byte _waterPumpPin; // This is a numeric PWM pin for the water pump
     bool isTankEmpty(); // return TRUE is the tank is empty
     int _lowThreshold = 500;
+    int _moistureSensorValue = 800;
+    int _hasBeenWatering = 0;
 };
 

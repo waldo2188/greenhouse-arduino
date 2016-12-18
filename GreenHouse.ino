@@ -97,7 +97,9 @@ void loop() {
     temperature.getInsideHumidity(),
     manageTemperatureHumidity.getFanSpeed(),
     lighting.getAmbientLight(),
-    lighting.getAdditionnalLight()
+    lighting.getAdditionnalLight(),
+    watering.getMoisure(),
+    watering.hasBeenWatering()
     );
 
   // 5minutes
