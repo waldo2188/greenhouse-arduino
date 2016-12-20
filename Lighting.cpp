@@ -17,9 +17,12 @@ void Lighting::init() {
 
 void Lighting::manageLight() {
 
-  // O mean no light at all
+  // 1023 mean no light at all
+  // 0 mean a lot of light
+  // So with map we inverse the value and at the end  
+  // 0 mean no light at all
   // 1023 mean a lot of light
-  _ambientLight = analogRead(_lightSensorPin);
+  _ambientLight = map(analogRead(_lightSensorPin), 0, 1023, 1023, 0);
 
   Serial.print("Amount of light : ");
   Serial.println(_ambientLight);
