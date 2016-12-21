@@ -41,6 +41,8 @@ class GreenWifi
       int hasBeenWatering
     );
 
+    void reset();
+
   protected:
 
     HttpServerHandler *httpServerHandlers;
@@ -50,7 +52,8 @@ class GreenWifi
     String readQueryParams(String query, String ref);
 
     String _apiThingsSpeak;
-  
+
+    void connection();
 };
 
 #endif

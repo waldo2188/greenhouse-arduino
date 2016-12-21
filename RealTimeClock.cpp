@@ -33,3 +33,30 @@ RTC_DS1307 RealTimeClock::getRTC() {
   return RTC;
 }
 
+String RealTimeClock::getTime() {
+  
+  String logString = "";
+
+  DateTime now = RTC.now(); // Get RTC date time
+
+  // Format Date time
+  logString = String(now.year(), DEC) + "-" + RealTimeClock::leadingZeros(now.month()) + "-" + RealTimeClock::leadingZeros(now.day()) + " ";
+  logString = logString + RealTimeClock::leadingZeros(now.hour()) + ":" + RealTimeClock::leadingZeros(now.minute()) + ":" + RealTimeClock::leadingZeros(now.second());
+  
+  return logString;
+}
+
+/**
+ * Add leading zero to have a two-digit number
+ * 
+ * @param int value
+ * @return String
+ */
+String RealTimeClock::leadingZeros(byte value) {
+  if(value < 10) {
+    return "0" + String(value, DEC);
+  }
+  
+  return String(value, DEC);
+}
+

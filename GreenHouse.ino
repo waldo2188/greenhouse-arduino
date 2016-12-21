@@ -32,12 +32,14 @@ OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initial
  
 RealTimeClock realTimeClock;
 Temperature temperature(&oneWire, DHTPIN);
-// 
+
 ManageTemperatureHumidity manageTemperatureHumidity(FAN_PIN);
 Watering watering(MOISTURE_SENSOR_PIN, MOISTURE_VCC_OUTPUT_PIN, HALL_MAGNETIC_SENSOR_PIN, WATER_PUMP_PIN);
 Lighting lighting(LIGHT_SENSOR_PIN, LIGHT_OUTPUT_PIN, &realTimeClock);
 GreenWifi gWifi;
 
+// Some time Wifi mess up, so we need to reset it
+long timeOutResetWifi = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -63,9 +65,14 @@ void setup() {
 
   // TODO remove when Wifi server will work
   //switchLight("on");
+
+  timeOutResetWifi = millis();
 }
 
 void loop() { 
+
+  Serial.print("\nTime : ");
+  Serial.println(realTimeClock.getTime());
 
   Serial.print("Outside temperature ");
   Serial.print(temperature.getOutsideTemp());
@@ -102,8 +109,15 @@ void loop() {
     watering.hasBeenWatering()
     );
 
-  // 5minutes
+  // Every 4 hour we reset the wifi
+  if(millis() - timeOutResetWifi > 14400000) {
+    timeOutResetWifi = millis();
+    gWifi.reset();
+  }
+
+  // Sleep weel for 5 minutes
   delay(300000);
+
 
   // TODO Don't work for now
   /*long startMillis = millis();
