@@ -13,10 +13,12 @@ void ManageTemperatureHumidity::manageFan(float insideTemp, float outsideTemp, f
   _fanSpeed = 0;
 
   // Check if it's to cold inside the greenhouse
-  if (insideTemp <= (this->_idealLowtemperature) && outsideTemp > insideTemp) {
+  // If it's to cold inside and we start the fan, the test show that the temp decrease instead of increase.
+  // So for now i disable this function.
+  /*if (insideTemp <= this->_idealLowtemperature && outsideTemp > insideTemp) {
     //TODO refine the bounds
     _fanSpeed = map((this->_idealLowtemperature - insideTemp), 0, 20, 100, 255);
-  }
+  }*/
 
   // Check if it's to hot inside the greenhouse
   if (insideTemp >= _idealHightemperature && outsideTemp <= insideTemp) {
