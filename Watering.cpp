@@ -6,13 +6,14 @@ Watering::Watering(
   byte moistureSensorPin, 
   byte moistureVCCOutputPin,
   byte hallMagneticSensorPin,
-  byte waterPumpPin) {
+  byte waterPumpPin,
+  RealTimeClock* rtc) {
 
   _moistureSensorPin = moistureSensorPin;
   _moistureVCCOutputPin = moistureVCCOutputPin;
   _hallMagneticSensorPin = hallMagneticSensorPin;
   _waterPumpPin = waterPumpPin;
-  
+  _rtc = rtc;  
 }
 
 void Watering::init() {
@@ -35,7 +36,7 @@ void Watering::manageWatering() {
 
     digitalWrite(_moistureVCCOutputPin, HIGH);
   
-    delay(500);
+    delay(1000);
   
     // Get the value of ground humidity
     this->_moistureSensorValue = analogRead(_moistureSensorPin);
@@ -47,28 +48,29 @@ void Watering::manageWatering() {
   
     Serial.print("Hall magnetic sensor (is tank empty) : ");
     Serial.println(this->isTankEmpty());
-  
+ 
     // If the tank is empty we can't send water to plants
-    if(this->isTankEmpty() == false) {
+    if(this->isTankEmpty() == false && this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd)) {
       if(this->_lowThreshold > this->_moistureSensorValue) {
          Serial.println("Ongoing watering");
          analogWrite(this->_waterPumpPin, 255);
-         delay(1000);
-         this->_hasBeenWatering++;
+         delay(2000);
+         this->_moistureSensorValue = analogRead(_moistureSensorPin);
+         this->_hasBeenWatering = this->_hasBeenWatering + 2;
       }
     }
 
-  } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false);
+  } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false && this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd) == true);
 
   analogWrite(this->_waterPumpPin, 0);
 }
 
 // The Hall magnetic sensor : http://www.banggood.com/5Pcs-DC-5V-KY-003-Hall-Magnetic-Sensor-Module-For-Arduino-p-954579.html
-// When no magnet is near the sensor send 0
-// When a magnet is near the sensor, he send 1
+// When no magnet is near the sensor send 1
+// When a magnet is near the sensor, he send 0
 // So when 0 si send by the sensor, that mean that the trank is empty
 bool Watering::isTankEmpty() {
-  return digitalRead(_hallMagneticSensorPin) == 1;
+  return digitalRead(_hallMagneticSensorPin) == 0;
 }
 
 int Watering::hasBeenWatering() {
@@ -78,4 +80,3 @@ int Watering::hasBeenWatering() {
 int Watering::getMoisure() {
   return this->_moistureSensorValue;
 }
-

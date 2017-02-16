@@ -5,17 +5,21 @@
 */
 
 #include <Arduino.h>
+#include "RealTimeClock.h"
 
 class Watering {
 
   public:
-    Watering(byte moistureSensorPin, byte moistureVCCOutputPin, byte hallMagneticSensorPin, byte waterPumpPin);
+    Watering(byte moistureSensorPin, byte moistureVCCOutputPin, byte hallMagneticSensorPin, byte waterPumpPin, RealTimeClock* rtc);
     void init();
     void manageWatering();
     int getMoisure();
     int hasBeenWatering();
 
   private:
+    // We define the boundaries between which the water pump can be used
+    byte _dayTimeStart = 8; // The day start à 8h, cause my little girl need to sleep ;)
+    byte _dayTimeEnd = 20; // The day end at 20h
     byte _moistureSensorPin; // This is an analog pin of Arduino
     byte _moistureVCCOutputPin; // VCC pin for turn on the sensor
     byte _hallMagneticSensorPin; // This is a numeric pin for the Hall Magnetic sensor
@@ -24,5 +28,5 @@ class Watering {
     int _lowThreshold = 500;
     int _moistureSensorValue = 800;
     int _hasBeenWatering = 0;
+    RealTimeClock* _rtc;
 };
-

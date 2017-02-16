@@ -28,6 +28,11 @@ class RealTimeClock {
 
     String getTime();
 
+    /**
+     * Return true if the hour is between the given boundary
+     */
+    boolean isHourBetweenBoundary(byte low, byte high);
+
   private:
     RTC_DS1307 RTC;      // RTC Module Chip model on theTiny RTC i2C modul
     

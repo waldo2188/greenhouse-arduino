@@ -33,6 +33,16 @@ RTC_DS1307 RealTimeClock::getRTC() {
   return RTC;
 }
 
+boolean RealTimeClock::isHourBetweenBoundary(byte low, byte high) {
+  byte currentHour = RTC.now().hour();
+
+  if(low <= currentHour && currentHour <= high) {
+    return true;
+  }
+
+  return false;
+}
+
 String RealTimeClock::getTime() {
   
   String logString = "";
@@ -59,4 +69,3 @@ String RealTimeClock::leadingZeros(byte value) {
   
   return String(value, DEC);
 }
-
