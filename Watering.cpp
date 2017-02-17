@@ -30,42 +30,49 @@ void Watering::init() {
 void Watering::manageWatering() {
 
   this->_hasBeenWatering = 0;
+
+  // Turn on moisture sensor
+  digitalWrite(_moistureVCCOutputPin, HIGH);
+  // Allows the sensor to wake up
+  delay(1000);
+
+  // Get the value of ground humidity
+  this->_moistureSensorValue = analogRead(_moistureSensorPin);
+
+  Serial.print("Moisture sensor : ");
+  Serial.println(this->_moistureSensorValue);
+
+  if(this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd) == false) {
+    // Turn off moisture sensor
+    digitalWrite(_moistureVCCOutputPin, LOW);
+    return;
+  }
+
+  Serial.print("Hall magnetic sensor (is tank empty) : ");
+  Serial.println(this->isTankEmpty());
   
   // Watering plants until they have the right amount of water, or the tank is empty
   do {
-
-    digitalWrite(_moistureVCCOutputPin, HIGH);
-  
-    delay(1000);
-  
-    // Get the value of ground humidity
-    this->_moistureSensorValue = analogRead(_moistureSensorPin);
-  
-    Serial.print("Moisture sensor : ");
-    Serial.println(this->_moistureSensorValue);
-  
-    digitalWrite(_moistureVCCOutputPin, LOW);
-  
-    Serial.print("Hall magnetic sensor (is tank empty) : ");
-    Serial.println(this->isTankEmpty());
-    
-    if(this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd) == false) {
-      return;
-    }
  
     // If the tank is empty we can't send water to plants
-    if(this->isTankEmpty() == false && this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd)) {
+    if(this->isTankEmpty() == false) {
       if(this->_lowThreshold > this->_moistureSensorValue) {
          Serial.println("Ongoing watering");
          analogWrite(this->_waterPumpPin, 255);
          delay(2000);
-         this->_moistureSensorValue = analogRead(_moistureSensorPin);
          this->_hasBeenWatering = this->_hasBeenWatering + 2;
       }
     }
-
+    
+    this->_moistureSensorValue = analogRead(_moistureSensorPin);
+    Serial.print("Moisture sensor after ");
+    Serial.print(this->_hasBeenWatering);
+    Serial.print(" seconds of watering : ");
+    Serial.println(this->_moistureSensorValue);
   } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false);
 
+  // Turn off moisture sensor
+  digitalWrite(_moistureVCCOutputPin, LOW);
   analogWrite(this->_waterPumpPin, 0);
 }
 
