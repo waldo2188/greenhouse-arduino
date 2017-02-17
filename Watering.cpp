@@ -48,6 +48,10 @@ void Watering::manageWatering() {
   
     Serial.print("Hall magnetic sensor (is tank empty) : ");
     Serial.println(this->isTankEmpty());
+    
+    if(this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd) == false) {
+      return;
+    }
  
     // If the tank is empty we can't send water to plants
     if(this->isTankEmpty() == false && this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd)) {
@@ -60,7 +64,7 @@ void Watering::manageWatering() {
       }
     }
 
-  } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false && this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd) == true);
+  } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false);
 
   analogWrite(this->_waterPumpPin, 0);
 }
