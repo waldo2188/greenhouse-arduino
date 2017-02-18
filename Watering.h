@@ -25,7 +25,7 @@ class Watering {
     byte _hallMagneticSensorPin; // This is a numeric pin for the Hall Magnetic sensor
     byte _waterPumpPin; // This is a numeric PWM pin for the water pump
     bool isTankEmpty(); // return TRUE is the tank is empty
-    int _lowThreshold = 500;
+    int _lowThreshold = 490;
     int _moistureSensorValue = 800;
     int _hasBeenWatering = 0;
     RealTimeClock* _rtc;
