@@ -18,8 +18,8 @@ class Watering {
 
   private:
     // We define the boundaries between which the water pump can be used
-    byte _dayTimeStart = 8; // The day start à 8h, cause my little girl need to sleep ;)
-    byte _dayTimeEnd = 20; // The day end at 20h
+    byte _dayTimeStart = 9; // The day start à 8h, cause my little girl need to sleep ;)
+    byte _dayTimeEnd = 19; // The day end at 20h
     byte _moistureSensorPin; // This is an analog pin of Arduino
     byte _moistureVCCOutputPin; // VCC pin for turn on the sensor
     byte _hallMagneticSensorPin; // This is a numeric pin for the Hall Magnetic sensor

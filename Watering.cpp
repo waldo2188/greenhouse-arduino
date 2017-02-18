@@ -34,7 +34,7 @@ void Watering::manageWatering() {
   // Turn on moisture sensor
   digitalWrite(_moistureVCCOutputPin, HIGH);
   // Allows the sensor to wake up
-  delay(1000);
+  delay(2000);
 
   // Get the value of ground humidity
   this->_moistureSensorValue = analogRead(_moistureSensorPin);
@@ -71,9 +71,9 @@ void Watering::manageWatering() {
     Serial.println(this->_moistureSensorValue);
   } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false);
 
+  analogWrite(this->_waterPumpPin, 0);
   // Turn off moisture sensor
   digitalWrite(_moistureVCCOutputPin, LOW);
-  analogWrite(this->_waterPumpPin, 0);
 }
 
 // The Hall magnetic sensor : http://www.banggood.com/5Pcs-DC-5V-KY-003-Hall-Magnetic-Sensor-Module-For-Arduino-p-954579.html
