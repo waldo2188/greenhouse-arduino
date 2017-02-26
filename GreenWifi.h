@@ -38,6 +38,7 @@ class GreenWifi
       int ambientLight,
       byte additionnalLight,
       int moiste,
+      int smoothMoiste,
       int hasBeenWatering
     );
 

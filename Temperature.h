@@ -23,14 +23,14 @@ class Temperature {
     float getInsideHumidity();
 
   private:
-  // Init outside temperature sensor
-  OneWire* _wire; // OneWire, communication initialisation
-  byte _dhtPin; // The number of the pin where the DHT sensor is connected
-  DallasTemperature _outsideSensors; // DS18B20, temperature sensor initialisation
-  DeviceAddress _outsideSensorsDeviceAddress;
-  dht DHT;
-  double _temperature;
-  double _humidity;
+    // Init outside temperature sensor
+    OneWire* _wire; // OneWire, communication initialisation
+    byte _dhtPin; // The number of the pin where the DHT sensor is connected
+    DallasTemperature _outsideSensors; // DS18B20, temperature sensor initialisation
+    DeviceAddress _outsideSensorsDeviceAddress;
+    dht DHT;
+    double _temperature;
+    double _humidity;
 };
 
 #endif

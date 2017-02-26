@@ -1,5 +1,4 @@
 
-
 #include "Watering.h"
 
 Watering::Watering(
@@ -13,7 +12,8 @@ Watering::Watering(
   _moistureVCCOutputPin = moistureVCCOutputPin;
   _hallMagneticSensorPin = hallMagneticSensorPin;
   _waterPumpPin = waterPumpPin;
-  _rtc = rtc;  
+  _rtc = rtc;
+  _moistureSensorSmoothedValue.init(10);
 }
 
 void Watering::init() {
@@ -24,7 +24,6 @@ void Watering::init() {
     pinMode(_waterPumpPin, OUTPUT);
     
     analogWrite(this->_waterPumpPin, 0);
-  
 }
 
 void Watering::manageWatering() {
@@ -38,9 +37,12 @@ void Watering::manageWatering() {
 
   // Get the value of ground humidity
   this->_moistureSensorValue = analogRead(_moistureSensorPin);
+  _moistureSensorSmoothedValue.put(this->_moistureSensorValue);
 
   Serial.print("Moisture sensor : ");
   Serial.println(this->_moistureSensorValue);
+  Serial.print("Smooth Moisture sensor : ");
+  Serial.println(this->getSmoothMoisure());
 
   if(this->_rtc->isHourBetweenBoundary(_dayTimeStart, _dayTimeEnd) == false) {
     // Turn off moisture sensor
@@ -56,7 +58,7 @@ void Watering::manageWatering() {
  
     // If the tank is empty we can't send water to plants
     if(this->isTankEmpty() == false) {
-      if(this->_lowThreshold > this->_moistureSensorValue) {
+      if(this->_lowThreshold > this->getSmoothMoisure()) {
          Serial.println("Ongoing watering");
          analogWrite(this->_waterPumpPin, 255);
          delay(2000);
@@ -65,10 +67,8 @@ void Watering::manageWatering() {
     }
     
     this->_moistureSensorValue = analogRead(_moistureSensorPin);
-    Serial.print("Moisture sensor after ");
-    Serial.print(this->_hasBeenWatering);
-    Serial.print(" seconds of watering : ");
-    Serial.println(this->_moistureSensorValue);
+    _moistureSensorSmoothedValue.put(this->_moistureSensorValue);  
+    
   } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false);
 
   analogWrite(this->_waterPumpPin, 0);
@@ -90,4 +90,8 @@ int Watering::hasBeenWatering() {
 
 int Watering::getMoisure() {
   return this->_moistureSensorValue;
+}
+
+int Watering::getSmoothMoisure() {
+  return this->_moistureSensorSmoothedValue.read();
 }

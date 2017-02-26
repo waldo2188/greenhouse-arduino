@@ -105,6 +105,7 @@ void loop() {
     lighting.getAmbientLight(),
     lighting.getAdditionnalLight(),
     watering.getMoisure(),
+    watering.getSmoothMoisure(),
     watering.hasBeenWatering()
     );
 

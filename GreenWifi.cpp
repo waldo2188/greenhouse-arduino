@@ -170,6 +170,7 @@ void GreenWifi::logData(
   int ambientLight,
   byte additionnalLight,
   int moiste,
+  int smoothMoiste,
   int hasBeenWatering
 ) {
     // close any connection before send a new request
@@ -191,7 +192,7 @@ void GreenWifi::logData(
     cmd += "&field6=";
     cmd += additionnalLight;
     cmd += "&field7=";
-    cmd += moiste;
+    cmd += smoothMoiste;
     cmd += "&field8=";
     cmd += hasBeenWatering;
 
