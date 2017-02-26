@@ -58,7 +58,6 @@ void setup() {
   // Initialise temperature sensors
   temperature.init();
 
-
   watering.init();
 
   lighting.init();
@@ -115,9 +114,8 @@ void loop() {
     gWifi.reset();
   }
 
-  // Sleep weel for 5 minutes
+  // Sleep well for 5 minutes
   delay(300000);
-
 
   // TODO Don't work for now
   // long startMillis = millis();
