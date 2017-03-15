@@ -24,8 +24,8 @@ class Lighting {
     byte _lightOutputPin; // Arduino's PWM pin link to light
     RealTimeClock* _rtc;
     // We define the boundaries between which the light can be compensated
-    byte _dayTimeStart = 6; // The day start à 6h
-    byte _dayTimeEnd = 20; // The day end at 20h
+    byte _dayTimeStart = 7; // The day start à 7h
+    byte _dayTimeEnd = 19; // The day end at 20h
     // Define if light is enabled
     bool _isEnabled = true;
     int _ambientLight;

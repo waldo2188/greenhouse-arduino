@@ -40,3 +40,8 @@ float SmoothingValue::read() {
   return sum / _size;
 }
 
+void SmoothingValue::initWithValue(int value) {
+  _isInit = false;
+  this->put(value);
+}
+

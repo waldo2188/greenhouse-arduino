@@ -14,6 +14,7 @@ class SmoothingValue {
     init(byte size);
     void put(int value);
     float read();
+    void initWithValue(int value);
 
   private:
     byte _size; // The number of values we have to store

@@ -52,19 +52,20 @@ void Watering::manageWatering() {
 
   Serial.print("Hall magnetic sensor (is tank empty) : ");
   Serial.println(this->isTankEmpty());
-  
+
   // Watering plants until they have the right amount of water, or the tank is empty
-  do {
- 
+  do { 
     // If the tank is empty we can't send water to plants
     if(this->isTankEmpty() == false) {
       if(this->_lowThreshold > this->getSmoothMoisure()) {
-         Serial.print("Ongoing watering, humidity :");
+         Serial.print("Ongoing watering, humidity : ");
          analogWrite(this->_waterPumpPin, 255);
-         delay(2000);
-         analogWrite(this->_waterPumpPin, 0);
-         delay(2000);
-         this->_hasBeenWatering = this->_hasBeenWatering + 2;
+         delay(1000);
+         this->_hasBeenWatering = this->_hasBeenWatering + 1;
+
+         this->_moistureSensorValue = analogRead(_moistureSensorPin);
+         _moistureSensorSmoothedValue.initWithValue(_moistureSensorValue);
+         Serial.println(this->_moistureSensorValue);
       }
     }
     
@@ -72,7 +73,7 @@ void Watering::manageWatering() {
     Serial.println(this->_moistureSensorValue);
     _moistureSensorSmoothedValue.put(this->_moistureSensorValue);
     
-  } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false);
+  } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false && this->_hasBeenWatering <= 10);
 
   analogWrite(this->_waterPumpPin, 0);
   // Turn off moisture sensor
