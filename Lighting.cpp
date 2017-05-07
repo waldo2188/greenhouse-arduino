@@ -30,14 +30,14 @@ void Lighting::manageLight() {
   byte actualHour = this->_rtc->getRTC().now().hour();
 
   // Light On !
-  if (_isEnabled && _ambientLight < 800 && _dayTimeStart <= actualHour && actualHour <= _dayTimeEnd) {
+  if (_isEnabled && _dayTimeStart <= actualHour && actualHour <= _dayTimeEnd) {
 
-    _additionnalLight = map(_ambientLight, 0, 1023, 255, 0);
-     
-    Serial.print("Compensating lighting : ");
-    Serial.println(_additionnalLight);
+    //_additionnalLight = map(_ambientLight, 0, 1023, 255, 0); 
+    //Serial.print("Compensating lighting : ");
+    //Serial.println(_additionnalLight);
 
-    analogWrite(_lightOutputPin, _additionnalLight);
+    // Allways the max amount of light
+    analogWrite(_lightOutputPin, 255);
     
   } else {
     // Light Off !

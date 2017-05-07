@@ -70,7 +70,6 @@ void Watering::manageWatering() {
     }
     
     this->_moistureSensorValue = analogRead(_moistureSensorPin);
-    Serial.println(this->_moistureSensorValue);
     _moistureSensorSmoothedValue.put(this->_moistureSensorValue);
     
   } while(this->_lowThreshold > this->_moistureSensorValue && this->isTankEmpty() == false && this->_hasBeenWatering <= 10);
@@ -85,7 +84,9 @@ void Watering::manageWatering() {
 // When a magnet is near the sensor, he send 0
 // So when 0 si send by the sensor, that mean that the trank is empty
 bool Watering::isTankEmpty() {
-  return digitalRead(_hallMagneticSensorPin) == 0;
+  // TODO enable wattering
+  return true;
+  //return digitalRead(_hallMagneticSensorPin) == 0;
 }
 
 int Watering::hasBeenWatering() {

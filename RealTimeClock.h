@@ -27,16 +27,21 @@ class RealTimeClock {
     RTC_DS1307 getRTC();
 
     String getTime();
+    String getTime(DateTime now);
 
     /**
      * Return true if the hour is between the given boundary
      */
     boolean isHourBetweenBoundary(byte low, byte high);
 
+    void updateForDST();
+
   private:
     RTC_DS1307 RTC;      // RTC Module Chip model on theTiny RTC i2C modul
+
+    byte DST = 1; // Daylight Saving Time. If "1" it's summer time
     
-    String leadingZeros(byte value);
+    String leadingZeros(byte value);  
 };
 
 #endif

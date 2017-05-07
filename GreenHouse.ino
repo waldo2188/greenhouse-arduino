@@ -1,9 +1,9 @@
 /**
- * Greenhouse 
- * 
- * 
- */
-#include "Config.h" 
+   Greenhouse
+
+
+*/
+#include "Config.h"
 #include <OneWire.h>            // OneWire
 #include "RealTimeClock.h"
 #include "Temperature.h"
@@ -29,7 +29,7 @@
 
 
 OneWire oneWire(OUTDSIDE_SENSOR_PIN);          // OneWire, communication initialisation
- 
+
 RealTimeClock realTimeClock;
 Temperature temperature(&oneWire, DHTPIN);
 
@@ -40,6 +40,9 @@ GreenWifi gWifi;
 
 // Some time Wifi mess up, so we need to reset it
 long timeOutResetWifi = 0;
+
+// Do something each hour
+byte currentHour = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -68,7 +71,7 @@ void setup() {
   timeOutResetWifi = millis();
 }
 
-void loop() { 
+void loop() {
 
   Serial.print("\nTime : ");
   Serial.println(realTimeClock.getTime());
@@ -88,7 +91,7 @@ void loop() {
     temperature.getInsideTemp(),
     temperature.getOutsideTemp(),
     temperature.getInsideHumidity()
-    );
+  );
 
   watering.manageWatering();
 
@@ -107,12 +110,17 @@ void loop() {
     watering.getMoisure(),
     watering.getSmoothMoisure(),
     watering.hasBeenWatering()
-    );
+  );
 
   // Every 4 hour we reset the wifi
-  if(millis() - timeOutResetWifi > 14400000) {
+  if (millis() - timeOutResetWifi > 14400000) {
     timeOutResetWifi = millis();
     gWifi.reset();
+  }
+
+  if (currentHour != realTimeClock.getRTC().now().hour()) {
+    currentHour = realTimeClock.getRTC().now().hour();
+    realTimeClock.updateForDST();
   }
 
   // Sleep well for 5 minutes

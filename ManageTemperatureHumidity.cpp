@@ -34,7 +34,7 @@ void ManageTemperatureHumidity::manageFan(float insideTemp, float outsideTemp, f
   Serial.print("Fan speed : ");
   Serial.println(_fanSpeed);
 
-  if (_fanSpeed > 0) {
+  if (_fanSpeed > 25) {
     this->setFanSpeed(_fanSpeed);
   } else {
     this->setFanSpeed(0);
@@ -45,6 +45,10 @@ void ManageTemperatureHumidity::manageFan(float insideTemp, float outsideTemp, f
    fanSpeed must be between 60 and 255
 */
 void ManageTemperatureHumidity::setFanSpeed(byte fanSpeed) {
+  if (fanSpeed > 0) {
+    analogWrite(this->_fanPin, 200);
+    delay(1000); // Just the time to launch the engine
+  }
   analogWrite(this->_fanPin, fanSpeed);
 }
 
