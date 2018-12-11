@@ -28,6 +28,7 @@ Monitored greenhouse for tastiest vegetable.
 This project require additionnal libraries that you have to get : 
  * [bportaluri/WiFiEsp](https://github.com/bportaluri/WiFiEsp)
  * [OneWire](http://www.pjrc.com/teensy/td_libs_OneWire.html)
- * [DallasTemperature](http://milesburton.com/index.php?title=Dallas_Temperature_Control_Library)
+ * [DallasTemperature](https://github.com/milesburton/Arduino-Temperature-Control-Library)
+ * [RTCLib](https://github.com/adafruit/RTClib.git)
 
 
